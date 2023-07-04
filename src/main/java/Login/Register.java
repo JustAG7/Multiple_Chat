@@ -93,8 +93,9 @@ public class Register extends JDialog {
 					else {
 						if(passwordField.getText().equals(passwordField_1.getText())) {
 							boolean taken = false;
-							con.registerAccount(textField.getText(), passwordField.getText(), comboBox.getSelectedItem().toString(), textField_1.getText(),taken);
 							taken = con.checkExistUserName(textField.getText());
+							con.registerAccount(textField.getText(), passwordField.getText(), comboBox.getSelectedItem().toString(), textField_1.getText(),taken);
+
 							System.out.println(taken);
 							if(taken == true) {
 								JOptionPane.showMessageDialog(null, "Tài khoản đã tồn tại");

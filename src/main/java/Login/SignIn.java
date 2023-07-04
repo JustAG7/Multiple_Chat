@@ -1,5 +1,6 @@
 package Login;
 
+import ChatRoom.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -8,13 +9,9 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
+
 import ConnectDB.*;
 
 public class SignIn extends JDialog {
@@ -90,8 +87,12 @@ public class SignIn extends JDialog {
 					String username = textField.getText();
 					String password = String.valueOf(passwordField.getPassword());
 					if (con.checkLogin(username, password)) {
+						MainRoom mainRoom = new MainRoom(username);
+						mainRoom.setVisible(true);
 						dispose();
-
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Sai tài khoản hoặc mật khẩu");
 					}
 				});
 				okButton.setActionCommand("OK");

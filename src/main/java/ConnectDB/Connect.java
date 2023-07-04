@@ -3,6 +3,9 @@ import com.mongodb.client.*;
 import org.bson.Document;
 import Login.*;
 
+import java.net.ServerSocket;
+import java.util.ArrayList;
+
 public class Connect {
     private MongoClient mongoClient;
     private MongoDatabase database;
@@ -30,6 +33,7 @@ public class Connect {
         }
         return false;
     }
+
     public boolean checkExistUserName(String username){
         collection = database.getCollection("auths");
         MongoCursor<Document> cursor = collection.find().iterator();
@@ -85,5 +89,34 @@ public class Connect {
         collection = database.getCollection("auths");
         String hashedPass = hashing.passwordHashing(password);
         collection.updateOne(new Document("username",username),new Document("$set",new Document("password",hashedPass)));
+    }
+
+    public ArrayList<ServerSocket> getServerList(){
+        collection = database.getCollection("servers");
+        ArrayList<ServerSocket> listServer = new ArrayList<>();
+        MongoCursor<Document> cursor = collection.find().iterator();
+        while (cursor.hasNext()) {
+            Document document = cursor.next();
+            int port = document.getInteger("port");
+            try{
+                ServerSocket server = new ServerSocket(port);
+                listServer.add(server);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return listServer;
+    }
+
+    public ArrayList<Integer> getAllPorts(){
+        collection = database.getCollection("servers");
+        ArrayList<Integer> listPort = new ArrayList<>();
+        MongoCursor<Document> cursor = collection.find().iterator();
+        while (cursor.hasNext()) {
+            Document document = cursor.next();
+            int port = document.getInteger("port");
+            listPort.add(port);
+        }
+        return listPort;
     }
 }
